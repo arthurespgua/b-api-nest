@@ -1,0 +1,14 @@
+{
+    "users": [
+        {
+            "name"          : "Francisco",
+            "lastname"      : "Villegaz",
+            "surname"       : "Reyes",
+            "email"         : "pancho.reyes@email.com",
+            "password"      : "sfasfadsf234fg561§3124rewsg-12easwfdsf",
+            "is_validated"  : false,
+            "id_department" : 1,
+            "id_rol"        : 1
+        }
+    ]
+}

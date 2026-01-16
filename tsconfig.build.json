@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@prisma/*": ["prisma/*"],
+      "@src/*": ["src/*"],
+      "@app/*": ["src/app/*"],
+      "@config": ["src/config"],
+      "@middlewares/*": ["src/middlewares/*"],
+      "@pipes/*": ["src/pipes/*"],
+      "@shared/*": ["src/shared/*"],
+      "@public/*": ["public/*"],
+
+      // ByModule
+      "@users/*": ["src/app/users/*"],
+      "@tasks/*": ["src/app/tasks/*"],
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+}
