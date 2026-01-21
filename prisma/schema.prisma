@@ -16,6 +16,16 @@ model Users {
     create_at     DateTime    @default(now())
     update_at     DateTime    @updatedAt
     tasks         Tasks[]
+    sessions      Sessions[]
+}
+
+model Sessions {
+    id          String   @id @default(uuid())
+    token       String   @db.Text
+    create_at   DateTime @default(now())
+    update_at   DateTime @updatedAt
+    id_user     String
+    user        Users    @relation(fields: [id_user], references: [id], onDelete: Cascade)
 }
 
 model Tasks {
@@ -27,5 +37,5 @@ model Tasks {
     create_at   DateTime @default(now())
     update_at   DateTime @updatedAt
     id_user     String
-    user        Users    @relation(fields: [id_user], references: [id])
+    user        Users    @relation(fields: [id_user], references: [id], onDelete: Cascade)
 }

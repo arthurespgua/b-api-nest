@@ -15,16 +15,6 @@ export class SwaggerDocumentBuilder {
             .setDescription('This is the Custom Swagger UI API application.')
             .setVersion('1.0')
             .addServer(`${APPLICATION_URL}/api`)
-            // .addBasicAuth()
-            // .addBearerAuth(
-            //     {
-            //         bearerFormat : 'Bearer',
-            //         scheme       : 'Bearer',
-            //         type         : 'http',
-            //         in           : 'Header',
-            //     },
-            //     'JWTAuthorization',
-            // );
 
         _SWAGGER_TAGS.forEach((tag) => {
             docBuilder.addTag(tag.name, tag.description);

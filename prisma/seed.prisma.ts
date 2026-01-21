@@ -4,11 +4,11 @@ import * as bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-    console.log('🌱 Iniciando seed...');
+    console.log('🌱 Starting seed...');
 
-    // 1. Crear Usuario Admin
+    // 1. Create Admin User
     const hashedPassword = await bcrypt.hash('admin123', 10);
-    
+
     const user = await prisma.users.upsert({
         where: { email: 'admin@bambu.com' },
         update: {},
@@ -16,12 +16,12 @@ async function main() {
             name         : 'Admin',
             email        : 'admin@bambu.com',
             password     : hashedPassword,
-            is_validated : true,
+            is_validated : true
         },
     });
-    console.log('✅ Usuario creado:', user.name, '(' + user.email + ')');
+    console.log('✅ User created:', user.name, '(' + user.email + ')');
 
-    // 2. Crear Tarea asociada al usuario Admin
+    // 2. Create a Welcome Task for the Admin User
     const task = await prisma.tasks.create({
         data: {
             name        : 'Tarea de Bienvenida',
@@ -31,9 +31,9 @@ async function main() {
             id_user     : user.id,
         },
     });
-    console.log('✅ Tarea creada:', task.name);
+    console.log('✅ Completed task:', task.name);
 
-    console.log('🌱 Seed completado con éxito!');
+    console.log('🌱 Seed completed successfully!');
 }
 
 main()

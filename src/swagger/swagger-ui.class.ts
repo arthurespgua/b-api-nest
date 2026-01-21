@@ -3,12 +3,8 @@ import { SWAGGER_UI_CONSTANTS } from './constants/swagger-ui-constants';
 export class SwaggerUI {
     constructor(private readonly applicationUrl: string) {}
 
-    private customSiteTitle    = 'CRM Credit API - Documentation';
-    private faviconFilename    = 'favicon.png';
-    private topbarIconFilename = 'app-logo.png';
-    private customfavIcon      = `${this.applicationUrl}/wwwroot/swagger/assets/${this.faviconFilename}`;
-    private customCss          = `
-        .topbar-wrapper { content:url('${this.applicationUrl}/wwwroot/swagger/assets/${this.topbarIconFilename}'); width:242px; height:auto; }
+    private customSiteTitle = 'ToDo Bambu API - Documentation';
+    private customCss       = `
         .topbar-wrapper svg { visibility: hidden; }
         .swagger-ui .topbar { background-color: ${SWAGGER_UI_CONSTANTS.TOPBAR.BACKGROUND_COLOR}; }
         .swagger-ui .opblock.opblock-get { background-color: ${SWAGGER_UI_CONSTANTS.HTTP_METHODS.GET.BACKGROUND_COLOR}; border-color: ${SWAGGER_UI_CONSTANTS.HTTP_METHODS.GET.BORDER_COLOR}; }
@@ -30,7 +26,6 @@ export class SwaggerUI {
     };
 
     public customOptions = {
-        customfavIcon   : this.customfavIcon,
         customSiteTitle : this.customSiteTitle,
         customCss       : this.customCss,
         swaggerOptions  : this.swaggerOptions,

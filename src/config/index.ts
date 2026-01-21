@@ -18,19 +18,19 @@ const defaultValues = {
     DB_USER         : '',
     JWT_SECRET      : '',
     JWT_EXPIRES_IN  : '1d',
-    APPLICATION_URL : "http://localhost:3000/api",
+    APPLICATION_URL : "",
     SWAGGER_URL     : "api/docs",
 }
 
 const envSchema = z.object({
-    API_ENDPOINT    : z.string().url().default(defaultValues.API_ENDPOINT),
-    DB_URL          : z.string().url().default(defaultValues.DB_URL),
+    API_ENDPOINT    : z.string().default(defaultValues.API_ENDPOINT),
+    DB_URL          : z.string().default(defaultValues.DB_URL),
     DB_PASSWORD     : z.string().default(defaultValues.DB_PASSWORD),
     DB_NAME         : z.string().default(defaultValues.DB_NAME),
     DB_USER         : z.string().default(defaultValues.DB_USER),
     JWT_SECRET      : z.string().default(defaultValues.JWT_SECRET),
     JWT_EXPIRES_IN  : z.string().default(defaultValues.JWT_EXPIRES_IN),
-    APPLICATION_URL : z.string().url().default(defaultValues.APPLICATION_URL),
+    APPLICATION_URL : z.string().default(defaultValues.APPLICATION_URL),
     SWAGGER_URL     : z.string().default(defaultValues.SWAGGER_URL),
 });
 

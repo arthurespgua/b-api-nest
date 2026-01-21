@@ -1,20 +1,23 @@
 export class BaseExceptionDto {
-    readonly statusCode: number;
-    readonly mensaje: string;
-    readonly detalles: string[];
-    readonly timestamp: string;
-    readonly path?: string;
+    readonly statusCode  : number;
+    readonly message     : string;
+    readonly details     : string[];
+    readonly timestamp   : string;
+    readonly path       ?: string;
+    readonly code       ?: string;
 
     constructor(
-        statusCode: number,
-        mensaje: string,
-        detalles: string[] = [],
-        path?: string,
+        statusCode  : number,
+        message     : string,
+        details     : string[] = [],
+        path       ?: string,
+        code       ?: string,
     ) {
         this.statusCode = statusCode;
-        this.mensaje = mensaje;
-        this.detalles = detalles;
-        this.timestamp = new Date().toISOString();
-        this.path = path;
-  }
+        this.message    = message;
+        this.details    = details;
+        this.timestamp  = new Date().toISOString();
+        this.path       = path;
+        this.code       = code;
+    }
 }
