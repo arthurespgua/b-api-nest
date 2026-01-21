@@ -7,10 +7,8 @@ import { ViewUserUseCase } from '@users/application/view-user/view-user.use-case
 import { ViewUserByEmailUseCase } from '@users/application/view-user-byEmail/view-user-byEmail.use-case';
 import { ViewUsersOutput, ViewUsersUseCase } from '@users/application/view-users/view-users.use-case';
 import { LoginUserUseCase } from '@users/application/login-user/login-user.use-case';
-import { ValidateJwtUseCase } from '@users/application/validate-jwt/validate-jwt.use-case';
 import { CreateUserDto } from '@users/presentation/dto/create-user.dto';
 import { UpdateUserDto } from '@users/presentation/dto/update-user.dto';
-import { DeleteUserDto } from '@users/presentation/dto/delete-user.dto';
 import { LoginUserDto } from '@users/presentation/dto/login-user.dto';
 import { ViewUserByEmailDto } from '@users/presentation/dto/view-user-byEmail.dto';
 import { Public } from '@shared/decorators/public.decorator';
@@ -28,7 +26,6 @@ export class UsersController {
         private readonly viewUserByEmail : ViewUserByEmailUseCase,
         private readonly viewUsers       : ViewUsersUseCase,
         private readonly loginUser       : LoginUserUseCase,
-        // private readonly validateUserWithToken : ValidateJwtUseCase,
     ) {}
 
     // Basic CRUD operations
@@ -47,7 +44,7 @@ export class UsersController {
         return await this.viewUser.execute({ id });
     }
 
-    @Post()
+    @Post('register')
     @Public()
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() createUserDto: CreateUserDto) {
@@ -106,7 +103,7 @@ export class UsersController {
         return await this.viewUserByEmail.execute(userByEmailDto);
     }
 
-    @Post('auth/login')
+    @Post('login')
     @Public()
     @HttpCode(HttpStatus.OK)
     async login(@Body() loginUserDto: LoginUserDto) {
@@ -123,7 +120,7 @@ export class UsersController {
         };
     }
 
-    @Post('auth/validate')
+    @Post('validate')
     @HttpCode(HttpStatus.OK)
     async validateToken(@CurrentUser() user: JwtTokenData) {
         // If the guard passed, the token is valid

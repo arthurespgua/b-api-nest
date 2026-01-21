@@ -2,6 +2,7 @@ import { MiddlewareConsumer, Module, OnModuleInit, RequestMethod } from '@nestjs
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { UsersModule } from '@users/users.module';
+import { TasksModule } from '@tasks/tasks.module';
 import { RequestLoggerMiddleware } from '@middlewares/request-logger.middleware';
 import { BodyLoggerMiddleware } from '@middlewares/body-logger.middleware';
 import { PrismaService } from '@prisma/prisma.service';
@@ -12,6 +13,7 @@ import { join } from 'path';
     imports: [
         ConfigModule.forRoot(),
         UsersModule,
+        TasksModule,
         ServeStaticModule.forRoot({
             rootPath  : join(__dirname, '../../..', 'wwwroot'),
             serveRoot : '/wwwroot',
