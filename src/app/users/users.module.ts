@@ -9,6 +9,7 @@ import { ViewUserUseCase } from '@users/application/view-user/view-user.use-case
 import { ViewUserByEmailUseCase } from '@users/application/view-user-byEmail/view-user-byEmail.use-case';
 import { ViewUsersUseCase } from '@users/application/view-users/view-users.use-case';
 import { LoginUserUseCase } from '@users/application/login-user/login-user.use-case';
+import { LogoutUserUseCase } from '@users/application/logout-user/logout-user.use-case';
 import { ValidateJwtUseCase } from '@users/application/validate-jwt/validate-jwt.use-case';
 import { UserRepositoryPrisma } from '@users/infrastructure/repositories/user-repository.prisma';
 import { SessionRepositoryPrisma } from '@users/infrastructure/repositories/session-repository.prisma';
@@ -50,9 +51,12 @@ import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
         ViewUsersUseCase,
         ViewUserByEmailUseCase,
         LoginUserUseCase,
+        LogoutUserUseCase,
         ValidateJwtUseCase,
     ],
-    exports     : []
+    exports     : [
+        'SessionRepository',
+    ]
 })
 
 export class UsersModule {}

@@ -1,3 +1,5 @@
+export const SESSION_REPOSITORY = 'SessionRepository';
+
 export interface SessionRepository {
     createSession(userId: string, jwtToken: string) : Promise<void>;
     invalidateSession(jwtToken: string)             : Promise<void>;

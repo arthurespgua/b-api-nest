@@ -1,6 +1,7 @@
 import { MiddlewareConsumer, Module, OnModuleInit, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { ScheduleModule } from '@nestjs/schedule';
 import { UsersModule } from '@users/users.module';
 import { TasksModule } from '@tasks/tasks.module';
 import { RequestLoggerMiddleware } from '@middlewares/request-logger.middleware';
@@ -8,10 +9,13 @@ import { BodyLoggerMiddleware } from '@middlewares/body-logger.middleware';
 import { PrismaService } from '@prisma/prisma.service';
 import { AppController } from '@app/app.controller';
 import { AppService } from '@app/app.service';
+import { SessionCleanupService } from '@shared/services/session-cleanup.service';
 import { join } from 'path';
+
 @Module({
     imports: [
         ConfigModule.forRoot(),
+        ScheduleModule.forRoot(), // Habilita cron jobs
         UsersModule,
         TasksModule,
         ServeStaticModule.forRoot({
@@ -25,7 +29,8 @@ import { join } from 'path';
     ],
     providers: [ 
         AppService,
-        PrismaService 
+        PrismaService,
+        SessionCleanupService,
     ],
     exports: [ 
         PrismaService,

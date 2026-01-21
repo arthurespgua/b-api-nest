@@ -10,14 +10,18 @@ export class SessionRepositoryPrisma implements SessionRepository {
 
     async createSession(userId: string, jwtToken: string): Promise<void> {
         try {
+            const expiresAt = new Date();
+            expiresAt.setHours(expiresAt.getHours() + 24);
+
             await this.prisma.sessions.create({
                 data: {
-                    token   : jwtToken,
-                    id_user : userId,
+                    token     : jwtToken,
+                    id_user   : userId,
+                    expiresAt : expiresAt,
                 },
             });
 
-            this.logger.log(`Session created for user: ${userId}`);
+            this.logger.log(`Session created for user: ${userId}, expires at: ${expiresAt.toISOString()}`);
         } catch (error) {
             this.logger.error(`Error creating session: ${error.message}`, error.stack);
             throw error;
@@ -53,7 +57,10 @@ export class SessionRepositoryPrisma implements SessionRepository {
     async isSessionValid(jwtToken: string): Promise<boolean> {
         try {
             const session = await this.prisma.sessions.findFirst({
-                where: { token: jwtToken },
+                where: { 
+                    token     : jwtToken,
+                    expiresAt : { gte: new Date() },
+                },
             });
 
             return session !== null;
@@ -65,14 +72,10 @@ export class SessionRepositoryPrisma implements SessionRepository {
 
     async cleanExpiredSessions(): Promise<number> {
         try {
-            // Eliminar sesiones más antiguas de 24 horas
-            const expirationDate = new Date();
-            expirationDate.setHours(expirationDate.getHours() - 24);
-
             const result = await this.prisma.sessions.deleteMany({
                 where: {
-                    create_at: {
-                        lt: expirationDate,
+                    expiresAt: {
+                        lt: new Date(),
                     },
                 },
             });

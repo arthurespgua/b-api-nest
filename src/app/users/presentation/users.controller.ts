@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import { Request } from 'express';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Req } from '@nestjs/common';
 import { UserMapper } from '@users/infrastructure/mappers/user.mapper';
 import { CreateUserUseCase } from '@users/application/create-user/create-user.use-case';
 import { UpdateUserUseCase } from '@users/application/update-user/update-user.use-case';
@@ -7,13 +8,14 @@ import { ViewUserUseCase } from '@users/application/view-user/view-user.use-case
 import { ViewUserByEmailUseCase } from '@users/application/view-user-byEmail/view-user-byEmail.use-case';
 import { ViewUsersOutput, ViewUsersUseCase } from '@users/application/view-users/view-users.use-case';
 import { LoginUserUseCase } from '@users/application/login-user/login-user.use-case';
+import { LogoutUserUseCase } from '@users/application/logout-user/logout-user.use-case';
 import { CreateUserDto } from '@users/presentation/dto/create-user.dto';
 import { UpdateUserDto } from '@users/presentation/dto/update-user.dto';
 import { LoginUserDto } from '@users/presentation/dto/login-user.dto';
 import { ViewUserByEmailDto } from '@users/presentation/dto/view-user-byEmail.dto';
 import { Public } from '@shared/decorators/public.decorator';
 import { CurrentUser } from '@shared/decorators/current-user.decorator';
-import { ForbiddenError } from '@shared/core/DomainError';
+import { ForbiddenError, UnauthorizedError } from '@shared/core/DomainError';
 import { JwtTokenData } from '@shared/services/jwt.service';
 
 @Controller('users')
@@ -26,6 +28,7 @@ export class UsersController {
         private readonly viewUserByEmail : ViewUserByEmailUseCase,
         private readonly viewUsers       : ViewUsersUseCase,
         private readonly loginUser       : LoginUserUseCase,
+        private readonly logoutUser      : LogoutUserUseCase,
     ) {}
 
     // Basic CRUD operations
@@ -133,6 +136,29 @@ export class UsersController {
                 issuedAt  : new Date(user.iat * 1000),
                 expiresAt : new Date(user.exp * 1000),
             }
+        };
+    }
+
+    @Post('logout')
+    @HttpCode(HttpStatus.OK)
+    async logout(@Req() request: Request) {
+        // Extracting the JWT token from the Authorization header
+        const authHeader = request.headers.authorization;
+        
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            throw UnauthorizedError.invalidCredentials();
+        }
+
+        const token = authHeader.split(' ')[1];
+        const result = await this.logoutUser.execute(token);
+
+        if (result.isFailure()) {
+            const error = result.getError();
+            throw error;
+        }
+
+        return {
+            message : 'Logout successful',
         };
     }
 }

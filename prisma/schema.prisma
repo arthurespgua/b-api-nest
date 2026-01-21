@@ -8,24 +8,25 @@ datasource db {
 }
 
 model Users {
-    id            String      @id @default(uuid())
-    name          String      @db.VarChar(52)
-    email         String      @unique @db.VarChar(52)
-    password      String      @db.VarChar(64)
-    is_validated  Boolean     @default(false)
-    create_at     DateTime    @default(now())
-    update_at     DateTime    @updatedAt
-    tasks         Tasks[]
-    sessions      Sessions[]
+    id           String     @id @default(uuid())
+    name         String     @db.VarChar(52)
+    email        String     @unique @db.VarChar(52)
+    password     String     @db.VarChar(64)
+    is_validated Boolean    @default(false)
+    create_at    DateTime   @default(now())
+    update_at    DateTime   @updatedAt
+    sessions     Sessions[]
+    tasks        Tasks[]
 }
 
 model Sessions {
-    id          String   @id @default(uuid())
-    token       String   @db.Text
-    create_at   DateTime @default(now())
-    update_at   DateTime @updatedAt
-    id_user     String
-    user        Users    @relation(fields: [id_user], references: [id], onDelete: Cascade)
+    id        String   @id @default(uuid())
+    token     String
+    create_at DateTime @default(now())
+    update_at DateTime @updatedAt
+    id_user   String
+    expiresAt DateTime @default(dbgenerated("(now() + '24:00:00'::interval)"))
+    user      Users    @relation(fields: [id_user], references: [id], onDelete: Cascade)
 }
 
 model Tasks {
